@@ -1,3 +1,4 @@
+# Build output
 bin/
 *.exe
 *.dll
@@ -5,4 +6,24 @@ bin/
 *.o
 *.pdb
 *.ilk
-*.vscode
+
+# VSCode
+.vscode/
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Backup files
+*~
+*.swp
+*.swo
+
+# Logs
+*.log
