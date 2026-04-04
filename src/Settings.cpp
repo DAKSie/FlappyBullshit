@@ -2,10 +2,10 @@
 
 Settings::Settings()
     : refreshRate_(RefreshRate::Hz60),
-      baseJumpImpulse_(460.0f),
+      baseJumpImpulse_(250.0f),
       baseGapSize_(180.0f),
-      baseObstacleSpacing_(900.0f),
-      baseScrollSpeed_(100.0f),
+      baseObstacleSpacing_(500.0f),
+      baseScrollSpeed_(400.0f),
       baseGravity_(400.0f),
       baseSpawnRate_(0.85f),
       centroidSmoothingAlpha_(0.35f) {}

@@ -7,18 +7,22 @@
 #include <exception>
 #include <memory>
 #include <optional>
+#include <iostream>
+#include <string>
 #include "CameraDetector.hpp"
 #include "Game.hpp"
 #include "RenderManager.hpp"
 #include "Settings.hpp"
+#include "Scoreboard.hpp"
 
 class App {
 public:
-  App()
+  App(std::shared_ptr<Scoreboard> scoreboard)
       : settings_(),
         renderManager_(),
         cameraDetector_(),
-        game_(),
+        game_(scoreboard),
+        scoreboard_(scoreboard),
         lastUpdateTimeNS_(0),
         accumulatorSeconds_(0.0f),
         worldInitialized_(false) {
@@ -157,6 +161,7 @@ private:
   RenderManager renderManager_;
   CameraDetector cameraDetector_;
   Game game_;
+  std::shared_ptr<Scoreboard> scoreboard_;
   Uint64 lastUpdateTimeNS_;
   float accumulatorSeconds_;
   bool worldInitialized_;
@@ -164,9 +169,31 @@ private:
 
 static std::unique_ptr<App> app;
 
+static std::string promptPlayerName() {
+  std::cout << "Welcome to Flappy Bird!\n";
+  std::cout << "Enter your name: ";
+  std::cout.flush();
+
+  std::string name;
+  if (std::getline(std::cin, name)) {
+    if (!name.empty()) {
+      return name;
+    }
+  }
+
+  return "Player";
+}
+
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
   try {
-    app = std::make_unique<App>();
+    std::string playerName = promptPlayerName();
+    
+    auto scoreboard = std::make_shared<Scoreboard>();
+    if (!scoreboard->loadOrCreateProfile(playerName)) {
+      SDL_Log("Warning: Could not load or create scoreboard profile");
+    }
+
+    app = std::make_unique<App>(scoreboard);
     *appstate = app.get();
     return SDL_APP_CONTINUE;
   } catch (const std::exception& error) {

@@ -1,12 +1,15 @@
 #include "Game.hpp"
+#include "Scoreboard.hpp"
 
 #include <array>
 #include <cmath>
+#include <cctype>
 #include <string>
 
-Game::Game()
+Game::Game(std::shared_ptr<Scoreboard> scoreboard)
     : bird_(),
       obstacles_(),
+      scoreboard_(scoreboard),
       score_(0),
       worldWidth_(0.0f),
       worldHeight_(0.0f),
@@ -94,6 +97,24 @@ void Game::render(SDL_Renderer* renderer) const {
     scoreX += 16.0f * 2.7f;
   }
 
+  if (scoreboard_) {
+    const std::string& playerName = scoreboard_->playerName();
+    const int bestScore = scoreboard_->bestScore();
+    
+    float nameX = worldWidth_ - 20.0f - (playerName.length() * 8.0f);
+    for (char c : playerName) {
+      drawSimpleChar(renderer, c, nameX, 18.0f, 0.8f);
+      nameX += 8.0f;
+    }
+    
+    const std::string bestScoreText = std::to_string(bestScore);
+    float bestScoreX = worldWidth_ - 18.0f - (bestScoreText.length() * 16.0f * 1.5f);
+    for (char c : bestScoreText) {
+      drawDigit(renderer, c - '0', bestScoreX, 38.0f, 1.5f);
+      bestScoreX += 16.0f * 1.5f;
+    }
+  }
+
   if (gameOver_) {
     const SDL_FRect panel = {worldWidth_ * 0.22f, worldHeight_ * 0.35f, worldWidth_ * 0.56f,
                              worldHeight_ * 0.3f};
@@ -158,6 +179,65 @@ void Game::drawDigit(SDL_Renderer* renderer, int digit, float x, float y, float 
   }
 }
 
+void Game::drawSimpleChar(SDL_Renderer* renderer, char c, float x, float y, float scale) {
+  const float w = 6.0f * scale;
+  const float h = 10.0f * scale;
+  const float t = 1.0f * scale;
+
+  c = static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+
+  SDL_FRect rect;
+  
+  if (c >= 'A' && c <= 'Z') {
+    switch (c) {
+      case 'A':
+        rect = SDL_FRect{x + w * 0.5f, y, t, h};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y + h * 0.5f, w, t};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y, t, h * 0.5f};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x + w - t, y, t, h * 0.5f};
+        SDL_RenderFillRect(renderer, &rect);
+        break;
+      case 'B':
+        rect = SDL_FRect{x, y, t, h};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y, w, t};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y + h * 0.5f - t * 0.5f, w - t, t};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y + h - t, w, t};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x + w - t, y, t, h * 0.5f};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x + w - t, y + h * 0.5f, t, h * 0.5f};
+        SDL_RenderFillRect(renderer, &rect);
+        break;
+      case 'P':
+        rect = SDL_FRect{x, y, t, h};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y, w, t};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x + w - t, y, t, h * 0.5f};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y + h * 0.5f - t * 0.5f, w, t};
+        SDL_RenderFillRect(renderer, &rect);
+        break;
+      case 'L':
+        rect = SDL_FRect{x, y, t, h};
+        SDL_RenderFillRect(renderer, &rect);
+        rect = SDL_FRect{x, y + h - t, w, t};
+        SDL_RenderFillRect(renderer, &rect);
+        break;
+      default:
+        rect = SDL_FRect{x, y, w, h};
+        SDL_RenderFillRect(renderer, &rect);
+        break;
+    }
+  }
+}
+
 bool Game::isGameOver() const {
   return gameOver_;
 }
@@ -185,6 +265,9 @@ void Game::handleRestartClick() {
 }
 
 void Game::startRestart() {
+  if (scoreboard_) {
+    scoreboard_->updateScore(score_);
+  }
   restarting_ = true;
   restartCountdownSeconds_ = 3.0f;
 }

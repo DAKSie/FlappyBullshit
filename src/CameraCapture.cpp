@@ -32,10 +32,10 @@ CameraCapture::CameraCapture()
       renderer_(nullptr),
       camera_(nullptr),
       texture_(nullptr),
-    frameWidth_(defaultWidth),
-    frameHeight_(defaultHeight),
-    targetFrameTimeNS_(1000000000ULL / 60ULL),
-    targetDetectTimeNS_(1000000000ULL / 60ULL),
+      frameWidth_(defaultWidth),
+      frameHeight_(defaultHeight),
+      targetFrameTimeNS_(1000000000ULL / 60ULL),
+      targetDetectTimeNS_(1000000000ULL / 60ULL),
       lastFrameTimeNS_(0),
       lastDetectTimeNS_(0) {
   if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_CAMERA)) {

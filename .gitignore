@@ -9,6 +9,7 @@ bin/
 
 # VSCode
 .vscode/
+.github/
 
 # OS files
 Thumbs.db
