@@ -1,4 +1,4 @@
-#include "CameraCapture.h"
+#include "CameraCapture.hpp"
 
 #include <stdexcept>
 #include <string>

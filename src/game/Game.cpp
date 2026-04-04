@@ -1,5 +1,5 @@
 #include "Game.hpp"
-#include "Scoreboard.hpp"
+#include "../core/Scoreboard.hpp"
 
 #include <array>
 #include <cmath>

@@ -3,7 +3,7 @@
 
 #include "Bird.hpp"
 #include "Obstacle.hpp"
-#include "Settings.hpp"
+#include "../core/Settings.hpp"
 
 #include <SDL3/SDL.h>
 #include <memory>

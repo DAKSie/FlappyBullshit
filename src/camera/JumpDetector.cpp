@@ -1,4 +1,4 @@
-#include "JumpDetector.h"
+#include "JumpDetector.hpp"
 
 #include <algorithm>
 #include <cmath>

@@ -1,7 +1,7 @@
 #ifndef RENDER_MANAGER_HPP
 #define RENDER_MANAGER_HPP
 
-#include "CameraCapture.h"
+#include "../camera/CameraCapture.hpp"
 
 #include <SDL3/SDL.h>
 
