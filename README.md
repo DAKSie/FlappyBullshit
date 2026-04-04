@@ -1,7 +1,3 @@
-"# Flappy Bird
-
-A single-player desktop game with face-tracking hand-gesture controls, built with SDL3 and OpenCV on Windows.
-
 ## Build and Run
 
 Use the build script from the repository root:
