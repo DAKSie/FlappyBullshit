@@ -23,7 +23,7 @@ Section "Install"
   File "bin\jump.exe"
   
   ; Copy all DLL dependencies from MSYS2
-  File /r "bin\*.dll"
+  File "bin\*.dll"
   
   ; Create Start Menu shortcuts
   SetShellVarContext all

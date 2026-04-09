@@ -7,8 +7,8 @@ if not exist bin mkdir bin
 set "MSYS2_UCRT64=C:\msys64\ucrt64"
 set "PATH=%MSYS2_UCRT64%\bin;%PATH%"
 
-echo Building src/*.cpp...
-"%MSYS2_UCRT64%\bin\g++.exe" src/*.cpp -std=c++17 -IC:/msys64/ucrt64/include -IC:/msys64/ucrt64/include/opencv4 -LC:/msys64/ucrt64/lib -lSDL3 -lopencv_core -lopencv_objdetect -lopencv_imgproc -lopencv_photo -o bin\jump.exe
+echo Building src/**/*.cpp...
+"%MSYS2_UCRT64%\bin\g++.exe" src/core/*.cpp src/game/*.cpp src/camera/*.cpp src/render/*.cpp -std=c++17 -Isrc -IC:/msys64/ucrt64/include -IC:/msys64/ucrt64/include/opencv4 -LC:/msys64/ucrt64/lib -lSDL3 -lopencv_core -lopencv_objdetect -lopencv_imgproc -lopencv_photo -o bin\jump.exe
 if errorlevel 1 goto :build_failed
 
 echo Copying DLL dependencies...
