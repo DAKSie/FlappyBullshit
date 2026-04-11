@@ -9,9 +9,9 @@
 #include <SDL3/SDL.h>
 #include <algorithm>
 
-App::App(std::shared_ptr<Scoreboard> scoreboard)
+App::App(std::shared_ptr<Scoreboard> scoreboard, int cameraDeviceIndex)
     : settings_(),
-      renderManager_(),
+      renderManager_(cameraDeviceIndex),
       cameraDetector_(),
       game_(scoreboard),
       scoreboard_(scoreboard),

@@ -14,7 +14,7 @@ public:
     Uint64 nowNS;
   };
 
-  CameraCapture();
+  CameraCapture(int deviceIndex = 0);
   ~CameraCapture();
 
   std::optional<FrameData> acquireFrame();

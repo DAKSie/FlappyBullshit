@@ -2,7 +2,7 @@
 
 #include <array>
 
-RenderManager::RenderManager() : camera_(), currentRefreshRate_(60) {
+RenderManager::RenderManager(int cameraDeviceIndex) : camera_(cameraDeviceIndex), currentRefreshRate_(60) {
   camera_.setVSync(true);
   SDL_SetRenderDrawBlendMode(camera_.renderer(), SDL_BLENDMODE_BLEND);
 }

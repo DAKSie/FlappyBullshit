@@ -11,7 +11,7 @@ class RenderManager {
 public:
   using FrameData = CameraCapture::FrameData;
 
-  RenderManager();
+  RenderManager(int cameraDeviceIndex = 0);
 
   std::optional<FrameData> acquireFrame();
   void releaseFrame(SDL_Surface* frame);

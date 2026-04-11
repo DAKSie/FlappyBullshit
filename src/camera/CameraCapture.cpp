@@ -27,7 +27,7 @@ void CameraCapture::TextureDeleter::operator()(SDL_Texture* ptr) const {
   }
 }
 
-CameraCapture::CameraCapture()
+CameraCapture::CameraCapture(int deviceIndex)
     : window_(nullptr),
       renderer_(nullptr),
       camera_(nullptr),
@@ -67,6 +67,11 @@ CameraCapture::CameraCapture()
     throw std::runtime_error("No camera devices found");
   }
 
+  if (deviceIndex < 0 || deviceIndex >= devcount) {
+    throw std::runtime_error(std::string("Invalid device index: ") + std::to_string(deviceIndex) + 
+                             " (available: 0-" + std::to_string(devcount - 1) + ")");
+  }
+
   SDL_CameraSpec desiredSpec;
   SDL_zero(desiredSpec);
   desiredSpec.format = SDL_PIXELFORMAT_RGBA32;
@@ -75,9 +80,9 @@ CameraCapture::CameraCapture()
   desiredSpec.framerate_numerator = defaultFPS;
   desiredSpec.framerate_denominator = 1;
 
-  SDL_Camera* rawCamera = SDL_OpenCamera(devices.get()[0], &desiredSpec);
+  SDL_Camera* rawCamera = SDL_OpenCamera(devices.get()[deviceIndex], &desiredSpec);
   if (!rawCamera) {
-    rawCamera = SDL_OpenCamera(devices.get()[0], nullptr);
+    rawCamera = SDL_OpenCamera(devices.get()[deviceIndex], nullptr);
   }
 
   if (!rawCamera) {

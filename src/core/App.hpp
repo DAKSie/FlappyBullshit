@@ -13,7 +13,7 @@ class Scoreboard;
 
 class App {
 public:
-  App(std::shared_ptr<Scoreboard> scoreboard);
+  App(std::shared_ptr<Scoreboard> scoreboard, int cameraDeviceIndex = 0);
 
   SDL_AppResult onEvent(const SDL_Event& event);
   SDL_AppResult onIterate();

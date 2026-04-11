@@ -6,9 +6,11 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <filesystem>
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <windows.h>
 
 cv::CascadeClassifier PersonTracker::faceCascade_;
 bool PersonTracker::cascadeLoaded_ = false;
@@ -157,11 +159,19 @@ void PersonTracker::ensureCascadeLoaded() {
     return;
   }
 
-  const std::array<std::string, 4> cascadePaths = {
+  std::vector<std::string> cascadePaths;
+
+  wchar_t exePath[MAX_PATH];
+  if (GetModuleFileNameW(nullptr, exePath, MAX_PATH)) {
+    std::filesystem::path exeDir = std::filesystem::path(exePath).parent_path();
+    cascadePaths.push_back((exeDir / "haarcascade_frontalface_default.xml").string());
+  }
+
+  cascadePaths.insert(cascadePaths.end(), {
       "C:/msys64/ucrt64/share/opencv4/haarcascades/haarcascade_frontalface_default.xml",
       "C:/opencv/build/etc/haarcascades/haarcascade_frontalface_default.xml",
       "C:/Program Files/OpenCV/etc/haarcascades/haarcascade_frontalface_default.xml",
-      "haarcascade_frontalface_default.xml"};
+      "haarcascade_frontalface_default.xml"});
 
   for (const std::string& path : cascadePaths) {
     if (tryLoadCascade(path)) {

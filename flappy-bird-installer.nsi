@@ -25,6 +25,9 @@ Section "Install"
   ; Copy all DLL dependencies from MSYS2
   File "bin\*.dll"
   
+  ; Copy OpenCV cascade classifier
+  File "bin\haarcascade_frontalface_default.xml"
+  
   ; Create Start Menu shortcuts
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\Flappy Bird"
@@ -60,6 +63,7 @@ Section "Uninstall"
   ; Remove all files from install directory
   Delete "$INSTDIR\jump.exe"
   Delete "$INSTDIR\*.dll"
+  Delete "$INSTDIR\haarcascade_frontalface_default.xml"
   Delete "$INSTDIR\uninstall.exe"
   
   RMDir "$INSTDIR"
